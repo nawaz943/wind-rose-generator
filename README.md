@@ -23,3 +23,6 @@ pip install -r requirements.txt
    You can customize the input and output directories using the `--input` and `--output` flags.
    For example: `python code.py -i my_epw_data/ -o my_wind_rose_plots/`
 3. Find your generated plots in the `output_wind_roses/` directory.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
