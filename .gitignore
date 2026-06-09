@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+ENV/
+
+# Data and Output
+epw-files/
+output_wind_roses/
+*.png
+*.epw
