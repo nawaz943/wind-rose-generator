@@ -1,3 +1,4 @@
+import argparse
 import csv
 import math
 from pathlib import Path
@@ -195,15 +196,25 @@ def build_wind_rose_plot(
 
 
 def _speed_bin_index(speed: float, speed_bins: Sequence[float]) -> int:
-    for index in range(len(speed_bins) - 1):
-        if speed_bins[index] <= speed < speed_bins[index + 1]:
-            return index
-    return len(speed_bins) - 2
+    """Determine the bin index for a given speed using numpy digitize."""
+    # np.digitize returns indices such that bins[i-1] <= x < bins[i]
+    idx = int(np.digitize(speed, speed_bins)) - 1
+    # Clip to valid range
+    return max(0, min(idx, len(speed_bins) - 2))
 
 
 def main() -> None:
-    input_dir = Path("epw-files")
-    output_dir = Path("output_wind_roses")
+    parser = argparse.ArgumentParser(description="Generate wind roses from EPW files.")
+    parser.add_argument(
+        "--input", "-i", type=str, default="epw-files", help="Directory containing EPW files"
+    )
+    parser.add_argument(
+        "--output", "-o", type=str, default="output_wind_roses", help="Output directory for PNGs"
+    )
+    args = parser.parse_args()
+
+    input_dir = Path(args.input)
+    output_dir = Path(args.output)
 
     if not input_dir.is_dir():
         print(f"Error: Directory '{input_dir}' not found.")
